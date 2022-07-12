@@ -68,9 +68,9 @@
          </font>
       </Label>
       <TextField fx:id="txtNic" layoutX="364.0" layoutY="124.0" prefHeight="25.0" prefWidth="254.0" />
-      <Button fx:id="btnsave" layoutX="428.0" layoutY="170.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" style="-fx-background-color: #1997ff;" text="Save" />
-      <Button fx:id="btnsave1" layoutX="428.0" layoutY="209.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" style="-fx-background-color: #fcc048;" text="Delete" />
-      <Button fx:id="btnsave11" layoutX="428.0" layoutY="249.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" style="-fx-background-color: #99ff4b;" text="Update" />
-      <TextField fx:id="txtSearchStudent" layoutX="112.0" layoutY="71.0" prefHeight="25.0" prefWidth="399.0" promptText="Search Student" />
+      <Button fx:id="btnsave" layoutX="428.0" layoutY="170.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="25.0" prefWidth="126.0" style="-fx-background-color: #1997ff;" text="Save" />
+      <Button fx:id="btnsave1" layoutX="428.0" layoutY="209.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="25.0" prefWidth="126.0" style="-fx-background-color: #fcc048;" text="Delete" />
+      <Button fx:id="btnsave11" layoutX="428.0" layoutY="249.0" mnemonicParsing="false" onAction="#btnUpdateOnAction" prefHeight="25.0" prefWidth="126.0" style="-fx-background-color: #99ff4b;" text="Update" />
+      <TextField fx:id="txtSearchStudent" layoutX="112.0" layoutY="71.0" onAction="#SearchOnAction" prefHeight="25.0" prefWidth="399.0" promptText="Search Student" />
    </children>
 </AnchorPane>

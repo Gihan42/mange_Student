@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 
 public class DashboardController {
@@ -23,4 +24,16 @@ public class DashboardController {
     public TextField txtContact;
     public Label lblstudentid;
     public TextField txtNic;
+
+    public void SearchOnAction(ActionEvent actionEvent) {
+    }
+
+    public void btnSaveOnAction(ActionEvent actionEvent) {
+    }
+
+    public void btnDeleteOnAction(ActionEvent actionEvent) {
+    }
+
+    public void btnUpdateOnAction(ActionEvent actionEvent) {
+    }
 }
