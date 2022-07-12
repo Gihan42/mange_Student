@@ -114,9 +114,39 @@ public class DashboardController {
         }
     }
 
-    public void btnUpdateOnAction(ActionEvent actionEvent) {
+    public void btnUpdateOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        Student student = new Student(
+                lblstudentid.getText(),
+                txtName.getText(),
+                txtEmail.getText(),
+                txtContact.getText(),
+                txtAddress.getText(),
+                txtNic.getText()
+        );
+        boolean isStUpdated = CrudUtil.execute("UPDATE student SET student_name=?, email=?, contact=?, address=?, NIC=? WHERE student_id=?",
+                //student.getId(),
+                student.getSName(),
+                student.getEMail(),
+                student.getContact(),
+                student.getAddress(),
+                student.getNic(),
+                student.getSId());
+        if (isStUpdated) {
+            new Alert(Alert.AlertType.CONFIRMATION, "Updated!").show();
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+        }
+
+        try {
+            loadAll();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
+
     public String generateOrderId() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = CrudUtil.execute("SELECT id FROM Student ORDER BY id DESC LIMIT 1");
         if (resultSet.next()) {
