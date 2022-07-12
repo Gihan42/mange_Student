@@ -44,6 +44,7 @@ public class DashboardController {
         colnic.setCellValueFactory(new PropertyValueFactory<>("nic"));
 
         try {
+            lblstudentid.setText(generateOrderId());
             loadAll();
             generateOrderId();
         } catch (SQLException throwables) {
@@ -82,6 +83,7 @@ public class DashboardController {
                 new Alert(Alert.AlertType.CONFIRMATION,"Student Saved").show();
                lblstudentid.setText(generateOrderId());
                loadAll();
+               clear();
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
