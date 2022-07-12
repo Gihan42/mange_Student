@@ -1,8 +1,12 @@
 package controller;
 
 import crudutil.CrudUtil;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import model.Student;
 
 import java.sql.ResultSet;
@@ -32,13 +36,28 @@ public class DashboardController {
 
     public  void initialize(){
 
+        colid.setCellValueFactory(new PropertyValueFactory<>("SId"));
+        colname.setCellValueFactory(new PropertyValueFactory<>("SName"));
+        colemail.setCellValueFactory(new PropertyValueFactory<>("eMail"));
+        colcontact.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("Address"));
+        colnic.setCellValueFactory(new PropertyValueFactory<>("nic"));
+        try {
+            loadAll();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void SearchOnAction(ActionEvent actionEvent) {
         try {
             ResultSet resultSet = CrudUtil.execute
-                    ("SELECT * FROM  Customer WHERE c_nic=?", txtSearchStudent.getText());
+                    ("SELECT * FROM  Student WHERE student_id=?", txtSearchStudent.getText());
             if (resultSet.next()) {
+                lblstudentid.setText(resultSet.getString(1));
                 txtName.setText(resultSet.getString(2));
                 txtEmail.setText(resultSet.getString(3));
                 txtContact.setText(resultSet.getString(4));
@@ -79,6 +98,20 @@ public class DashboardController {
     }
 
     public void btnDeleteOnAction(ActionEvent actionEvent) {
+        try{
+            if(CrudUtil.execute
+                    ("DELETE  FROM  Student WHERE student_id=?",txtSearchStudent.getText())){
+                clear();
+                tblStudent.refresh();
+                new Alert(Alert.AlertType.CONFIRMATION,"DELETED").show();
+            }
+            else{
+                new Alert(Alert.AlertType.WARNING,"SOMETHING WENT WRONG").show();
+            }
+        }
+        catch(SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) {
@@ -101,5 +134,34 @@ public class DashboardController {
             }
         }
         return "O001";
+    }
+    public void clear(){
+        txtName.clear();
+        txtNic.clear();
+        txtContact.clear();
+        txtEmail.clear();
+        txtAddress.clear();
+    }
+
+    public void loadAll() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = CrudUtil.execute("SELECT * FROM student");
+        ObservableList<Student> oblist = FXCollections.observableArrayList();
+        while (resultSet.next()) {
+            oblist.add(
+                    new Student(
+                            resultSet.getString(1),
+                            resultSet.getString(2),
+                            resultSet.getString(3),
+                            resultSet.getString(4),
+                            resultSet.getString(5),
+                            resultSet.getString(6)
+                    )
+            );
+        }
+        tblStudent.setItems(oblist);
+        tblStudent.refresh();
+    }
+
+    public void loadAllOnAction(MouseEvent mouseEvent) {
     }
 }

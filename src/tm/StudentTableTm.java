@@ -14,4 +14,5 @@ public class StudentTableTm {
     private String eMail;
     private String contact;
     private String Address;
+    private String nic;
 }
