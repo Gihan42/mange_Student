@@ -1,0 +1,123 @@
+CREATE DATABASE ijse;
+USE ijse;
+create table student
+(
+    student_id   varchar(45) not null,
+    student_name varchar(45) null,
+    email        text        null,
+    contact      varchar(20) null,
+    address      text        null,
+    NIC          varchar(45) null,
+    constraint Student_student_id_uindex
+        unique (student_id)
+);
+
+alter table student
+    add primary key (student_id);
+----------------------------------------------------
+create table teacher
+(
+    teacher_id varchar(45) not null,
+    name       varchar(45) null,
+    nic        varchar(45) null,
+    contact    varchar(45) null,
+    address    text        null,
+    constraint Teacher_teacher_id_uindex
+        unique (teacher_id)
+);
+
+alter table teacher
+    add primary key (teacher_id);
+------------------------------------------------
+create table subject
+(
+    subject_id   varchar(45) not null,
+    subject_name varchar(45) null,
+    credit       double      null,
+    teacher      varchar(45) not null,
+    constraint subject_subject_id_uindex
+        unique (subject_id),
+    constraint subject_teacher_teacher_id_fk
+        foreign key (teacher) references teacher (teacher_id)
+            on update cascade on delete cascade
+);
+
+alter table subject
+    add primary key (subject_id);
+-------------------------------------------------
+create table course
+(
+    course_id   varchar(45) not null
+        primary key,
+    course_name varchar(45) null,
+    cost        double      null,
+    duration    varchar(45) null,
+    subject     varchar(45) not null,
+    constraint course_subject_subject_id_fk
+        foreign key (subject) references subject (subject_id)
+            on update cascade on delete cascade
+);
+--------------------------------------------------
+create table intake
+(
+    intake_id   varchar(45) not null
+        primary key,
+    start_date  date        null,
+    intake_col  varchar(45) null,
+    description varchar(45) null,
+    course      varchar(45) not null,
+    constraint intake_course_course_id_fk
+        foreign key (course) references course (course_id)
+            on update cascade on delete cascade
+);
+--------------------------------------------------
+create table registration
+(
+    registration_id varchar(45),
+    reg_date date null,
+    student varchar(45) null,
+    intake varchar(45),
+    constraint registration_intake_intake_id_fk
+        foreign key (intake) references intake (intake_id)
+            on update cascade on delete cascade,
+    constraint registration_student_student_id_fk
+        foreign key (student) references student (student_id)
+            on update cascade on delete cascade,
+    primary key (registration_id,intake)
+);
+-------------------------------------------------
+create table payment
+(
+    payment_id   varchar(45) not null
+        primary key,
+    date         date        null,
+    cost         double      null,
+    registration varchar(45) null,
+    constraint payment_registration_registration_id_fk
+        foreign key (registration) references registration (registration_id)
+            on update cascade on delete cascade
+);
+
+INSERT INTO student VALUES('S001','Gihan','gihan807@gmail.com','0771345567','Matara','200025503568');
+INSERT INTO student VALUES('S003','Ashen','ash@gmail.com','0770065825','Galle','200033699789');
+INSERT INTO student VALUES('S002','Tharindu','tharin@gmail.com','0772598564','Matara','200033654732');
+
+INSERT INTO teacher VALUES('T001','Hasika','199523569789','0770895677','Galle');
+INSERT INTO teacher VALUES('T002','Niroth','345345345455','8945687546','Panadura');
+
+INSERT INTO subject VALUES('U001','DBMS',90,'T001');
+INSERT INTO subject VALUES('U002','PRF',88.5,'T002');
+
+
+INSERT INTO course VALUES('C001','GDSE',520000.00,'2 year','U001');
+INSERT INTO course VALUES('C002','CMJD',450000.00,'6 months','U002');
+
+INSERT INTO intake VALUES('I001','2022-08-21','a','1st intake','C001');
+INSERT INTO intake VALUES('I002','2022-08-21','b','1st intake','C002');
+
+
+INSERT INTO registration VALUES('R001','2022-07-15','S003','I001');
+INSERT INTO registration VALUES('R002','2022-06-15','S001','I002');
+
+INSERT INTO payment VALUES('P001','2022-07-15',10000.00,'R001');
+INSERT INTO payment VALUES('P002','2022-06-15',8000.00,'R002');
