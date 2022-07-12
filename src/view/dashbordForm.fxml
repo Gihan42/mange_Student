@@ -57,7 +57,7 @@
          </font>
       </Label>
       <TextField fx:id="txtContact" layoutX="113.0" layoutY="272.0" prefHeight="25.0" prefWidth="230.0" />
-      <Label fx:id="lblstudentid" layoutX="121.0" layoutY="124.0" prefHeight="25.0" prefWidth="54.0" text="ST001" textFill="#ef4343">
+      <Label fx:id="lblstudentid" layoutX="121.0" layoutY="124.0" prefHeight="25.0" prefWidth="54.0" text="S001" textFill="#ef4343">
          <font>
             <Font size="15.0" />
          </font>

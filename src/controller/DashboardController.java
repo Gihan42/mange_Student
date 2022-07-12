@@ -42,35 +42,29 @@ public class DashboardController {
         colcontact.setCellValueFactory(new PropertyValueFactory<>("contact"));
         colAddress.setCellValueFactory(new PropertyValueFactory<>("Address"));
         colnic.setCellValueFactory(new PropertyValueFactory<>("nic"));
+
         try {
             loadAll();
+            generateOrderId();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+      /*  tblStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue !=null){
+                lblstudentid.setText(newValue.);
+                txtName.setText(newValue.getItemCode());
+                txtAddress.setText(String.valueOf(newValue.getQty()));
+                txtNic.setText(String.valueOf(newValue.getDiscount()));
+                search();
+            }
+        });*/
 
     }
 
     public void SearchOnAction(ActionEvent actionEvent) {
-        try {
-            ResultSet resultSet = CrudUtil.execute
-                    ("SELECT * FROM  Student WHERE student_id=?", txtSearchStudent.getText());
-            if (resultSet.next()) {
-                lblstudentid.setText(resultSet.getString(1));
-                txtName.setText(resultSet.getString(2));
-                txtEmail.setText(resultSet.getString(3));
-                txtContact.setText(resultSet.getString(4));
-                txtAddress.setText(resultSet.getString(5));
-                txtNic.setText(resultSet.getString(6));
-
-            } else {
-                new Alert(Alert.AlertType.ERROR, "EMPTY RESULT").show();
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        search();
     }
 
     public void btnSaveOnAction(ActionEvent actionEvent) {
@@ -86,8 +80,8 @@ public class DashboardController {
             if ( CrudUtil.execute("Insert into Student Values(?,?,?,?,?,?)",
                     c.getSId(),c.getSName(),c.getEMail(),c.getContact(),c.getAddress(),c.getNic())){
                 new Alert(Alert.AlertType.CONFIRMATION,"Student Saved").show();
-               /* generateOrderId();
-               lblstudentid.setText(generateOrderId());*/
+               lblstudentid.setText(generateOrderId());
+               loadAll();
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -103,6 +97,7 @@ public class DashboardController {
                     ("DELETE  FROM  Student WHERE student_id=?",txtSearchStudent.getText())){
                 clear();
                 tblStudent.refresh();
+                loadAll();
                 new Alert(Alert.AlertType.CONFIRMATION,"DELETED").show();
             }
             else{
@@ -148,7 +143,7 @@ public class DashboardController {
     }
 
     public String generateOrderId() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = CrudUtil.execute("SELECT id FROM Student ORDER BY id DESC LIMIT 1");
+        ResultSet resultSet = CrudUtil.execute("SELECT student_id FROM Student ORDER BY student_id DESC LIMIT 1");
         if (resultSet.next()) {
             String oldId = resultSet.getString(1);
             String substring = oldId.substring(1, 4);
@@ -156,14 +151,14 @@ public class DashboardController {
 
             intId = intId + 1;
             if (intId < 10) {
-                return "O00" + intId;
+                return "S00" + intId;
             } else if (intId < 100) {
                 return "O0" + intId;
             } else if (intId < 1000) {
                 return "O" + intId;
             }
         }
-        return "O001";
+        return "S001";
     }
     public void clear(){
         txtName.clear();
@@ -193,5 +188,25 @@ public class DashboardController {
     }
 
     public void loadAllOnAction(MouseEvent mouseEvent) {
+    }
+    private  void search(){
+        try {
+            ResultSet resultSet = CrudUtil.execute
+                    ("SELECT * FROM  Student WHERE student_id=?", txtSearchStudent.getText());
+            if (resultSet.next()) {
+                lblstudentid.setText(resultSet.getString(1));
+                txtName.setText(resultSet.getString(2));
+                txtEmail.setText(resultSet.getString(3));
+                txtContact.setText(resultSet.getString(4));
+                txtAddress.setText(resultSet.getString(5));
+                txtNic.setText(resultSet.getString(6));
+
+            } else {
+                new Alert(Alert.AlertType.ERROR, "EMPTY RESULT").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 }
